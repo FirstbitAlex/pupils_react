@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import "./css/normalize.css"
+import "./css/base.css"
+import CardForm from './Components/CardForm';
+import CardList from './Components/CardList';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
+	const [cards, setCards] = useState([
+		{ id: 1, img: "./img/01.jpg", name: "Alex1", position: "IT1" },
+		{ id: 2, img: "./img/02.jpg", name: "Alex2", position: "IT2" },
+		{ id: 3, img: "./img/03.jpg", name: "Alex3", position: "IT3" },
+	])
+
+	const createCard = (newCard) => {
+		setCards([...cards, newCard])
+	}
+
+	const removeCard = (card) => {
+		setCards(cards.filter(c => c.id !== card.id))
+	}
+
+	return (
+		<div className="App">
+			<div className="base-wrap">
+				{/* <Counter /> */}
+
+				<h1 className="page-title">Card List</h1>
+
+				<CardForm create={createCard} />
+				<CardList remove={removeCard} cards={cards} />
+			</div>
+		</div>
+	);
+}
 export default App;

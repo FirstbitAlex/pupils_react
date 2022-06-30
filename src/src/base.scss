@@ -1,0 +1,14 @@
+.base-wrap {
+	position: relative;
+	max-width: 600px;
+	margin: 0 auto;
+	width: 100%;
+
+	.page-title {
+		position: relative;
+		margin-top: 40px;
+		font-size: 32px;
+		line-height: 36px;
+		text-align: center;
+	}
+}
