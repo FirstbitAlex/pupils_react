@@ -1,34 +1,33 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import MyButton from "./UI/button/MyButton";
+import MyInput from "./UI/input/MyInput";
 
-import MyButton from "./UI/button/MyButton"
-import MyInput from "./UI/input/MyInput"
-
-const CardForm = function ({create}) {
+const CardForm = function ({ create }) {
 	const [card, setCard] = useState({
 		img: "./img/01.jpg",
 		name: "",
 		position: "",
-	})
+	});
 
 	const addNewCard = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		// setCards([...cards, { ...card, id: Date.now() }])
 
 		const newCard = {
 			...card,
 			id: Date.now(),
-		}
+		};
 
-        create(newCard)
+		create(newCard);
 
 		setCard({
 			img: "./img/01.jpg",
 			name: "",
 			position: "",
-		})
-	}
+		});
+	};
 	return (
-		<form>
+		<form className="card-list">
 			<MyInput
 				value={card.name}
 				onChange={(e) => setCard({ ...card, name: e.target.value })}
@@ -45,6 +44,6 @@ const CardForm = function ({create}) {
 
 			<MyButton onClick={addNewCard}>Save</MyButton>
 		</form>
-	)
-}
-export default CardForm
+	);
+};
+export default CardForm;
