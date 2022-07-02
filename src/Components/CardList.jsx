@@ -1,4 +1,5 @@
 import React from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../css/card.css";
 import CardItem from "./CardItem";
 
@@ -9,14 +10,21 @@ const CardList = function ({ cards, remove }) {
 
 	return (
 		<div className="card-wrap">
-			{cards.map((card, index) => (
-				<CardItem
-					remove={remove}
-					number={index + 1}
-					card={card}
-					key={card.id}
-				/>
-			))}
+			<TransitionGroup component={null}>
+				{cards.map((card, index) => (
+					<CSSTransition
+						key={card.id}
+						timeout={500}
+						classNames="card"
+					>
+						<CardItem
+							remove={remove}
+							number={index + 1}
+							card={card}
+						/>
+					</CSSTransition>
+				))}
+			</TransitionGroup>
 		</div>
 	);
 };

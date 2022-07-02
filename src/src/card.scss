@@ -1,7 +1,5 @@
 .card-wrap {
 	position: relative;
-	display: flex;
-	flex-wrap: wrap;
 	margin: 40px 0;
 
 	.card-item {
@@ -32,6 +30,27 @@
 			line-height: 24px;
 			font-size: 16px;
 			font-style: italic
+		}
+
+		&.card-enter {
+			opacity: 0;
+			transform: translateX(-350px);
+		}
+
+		&.card-enter-active {
+			opacity: 1;
+			transform: translateX(0px);
+			transition: all 500ms ease-in;
+		}
+
+		&.card-exit {
+			opacity: 1;
+		}
+
+		&.card-exit-active {
+			opacity: 0;
+			transform: translateX(-350px);
+			transition: all 500ms ease-in;
 		}
 	}
 }

@@ -1,7 +1,5 @@
 .card-wrap {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
   margin: 40px 0;
 }
 .card-wrap .card-item {
@@ -30,4 +28,24 @@
   line-height: 24px;
   font-size: 16px;
   font-style: italic;
+}
+.card-wrap .card-item.card-enter {
+  opacity: 0;
+  -webkit-transform: translateX(-350px);
+          transform: translateX(-350px);
+}
+.card-wrap .card-item.card-enter-active {
+  opacity: 1;
+  -webkit-transform: translateX(0px);
+          transform: translateX(0px);
+  transition: all 500ms ease-in;
+}
+.card-wrap .card-item.card-exit {
+  opacity: 1;
+}
+.card-wrap .card-item.card-exit-active {
+  opacity: 0;
+  -webkit-transform: translateX(-350px);
+          transform: translateX(-350px);
+  transition: all 500ms ease-in;
 }
