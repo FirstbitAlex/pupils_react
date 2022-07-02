@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import "./css/normalize.css"
 import "./css/base.css"
 import CardForm from './Components/CardForm';
@@ -8,6 +7,8 @@ import CardFilter from './Components/CardFilter';
 import MyModal from './Components/UI/MyModal/MyModal';
 import MyButton from './Components/UI/button/MyButton';
 import { useCards } from './hooks/useCards';
+import CardService from './API/CardService';
+import Loader from './Components/UI/Loader/Loader';
 
 
 function App() {
@@ -16,6 +17,11 @@ function App() {
 	const [filter, setFilter] = useState({ sort: '', query: '' });
 	const [modal, setModal] = useState(false);
 	const sortedAndSearchedCards = useCards(cards, filter.sort, filter.query)
+	const [isCardsLoading, setIsCardsLoading] = useState(false);
+
+	useEffect(() => {
+		fetchCards()
+	}, [filter])
 
 	const createCard = (newCard) => {
 		setCards([...cards, newCard])
@@ -23,9 +29,13 @@ function App() {
 	}
 
 	async function fetchCards() {
-		const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-		setCards(response.data)
-		console.log(response.data)
+		setIsCardsLoading(true)
+		setTimeout(async () => {
+			const cards = await CardService.getAll()
+			setCards(cards)
+			setIsCardsLoading(false)
+		}, 2000);
+
 	}
 
 	const removeCard = (card) => {
@@ -57,7 +67,11 @@ function App() {
 
 				<hr style={{ margin: '15px 0' }} />
 
-				<CardList remove={removeCard} cards={sortedAndSearchedCards} />
+
+				{isCardsLoading
+					? <div atyle={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Loader /></div>
+					: <CardList remove={removeCard} cards={sortedAndSearchedCards} />
+				}
 
 			</div>
 		</div >
