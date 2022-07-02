@@ -1,62 +1,70 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import "./css/normalize.css"
 import "./css/base.css"
 import CardForm from './Components/CardForm';
 import CardList from './Components/CardList';
-import MySelect from './Components/UI/select/MySelect';
-
+import CardFilter from './Components/CardFilter';
+import MyModal from './Components/UI/MyModal/MyModal';
+import MyButton from './Components/UI/button/MyButton';
 
 function App() {
 
 	const [cards, setCards] = useState([
-		{ id: 1, img: "./img/01.jpg", name: "Alex1", position: "IT1" },
-		{ id: 2, img: "./img/02.jpg", name: "Alex2", position: "IT2" },
-		{ id: 3, img: "./img/03.jpg", name: "Alex3", position: "IT3" },
+		{ id: 1, img: "./img/01.jpg", name: "Alex", position: "C" },
+		{ id: 2, img: "./img/02.jpg", name: "Test", position: "A" },
+		{ id: 3, img: "./img/03.jpg", name: "123", position: "b" },
 	])
 
-	const [selectedSort, setSelectedSort] = useState('')
+	const [filter, setFilter] = useState({ sort: '', query: '' });
+	const [modal, setModal] = useState(false);
+
+	const sortedCards = useMemo(() => {
+		if (filter.sort) {
+			return [...cards].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
+		}
+		return cards
+	}, [filter.sort, cards])
+
+	const sortedAndSearchedCards = useMemo(() => {
+		return sortedCards.filter(card => card.name.toLowerCase().includes(filter.query.toLowerCase()))
+	}, [filter.query, sortedCards])
 
 	const createCard = (newCard) => {
 		setCards([...cards, newCard])
+		setModal(false)
 	}
 
 	const removeCard = (card) => {
 		setCards(cards.filter(c => c.id !== card.id))
 	}
 
-	const sortCards = (sort) => {
-		setSelectedSort(sort)
-		setCards([...cards].sort((a, b) => a[sort].localeCompare(b[sort])))
-	}
-
 	return (
 		<div className="App">
 			<div className="base-wrap">
-				{/* <Counter /> */}
+
+				<MyButton style={{ marginTop: '20px' }} onClick={() => setModal(true)}>
+					Create Card
+				</MyButton>
+
+				<MyModal visible={modal} setVisible={setModal}>
+					<CardForm create={createCard} />
+				</MyModal>
 
 				<h1 className="page-title">Card List</h1>
 
-				<CardForm create={createCard} />
-				<div>
-					<hr style={{ margin: '15px 0' }} />
-					<MySelect
-						value={selectedSort}
-						onChange={sortCards}
-						defaultValue="Sort by:"
-						options={[
-							{ value: 'name', name: 'name' },
-							{ value: 'position', name: 'position' },
-						]}
-					/>
-				</div>
+				<hr style={{ margin: '15px 0' }} />
 
-				{cards.length
-					? <CardList remove={removeCard} cards={cards} />
-					: <div className="no-post-in-list">No posts in list</div>
-				}
+				<CardFilter
+					filter={filter}
+					setFilter={setFilter}
+				/>
+
+				<hr style={{ margin: '15px 0' }} />
+
+				<CardList remove={removeCard} cards={sortedAndSearchedCards} />
 
 			</div>
-		</div>
+		</div >
 	);
 }
 export default App;
