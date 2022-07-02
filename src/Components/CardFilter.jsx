@@ -22,7 +22,8 @@ const CardFilter = function ({ filter, setFilter }) {
 				defaultValue="Sort by:"
 				options={[
 					{ value: "name", name: "name" },
-					{ value: "position", name: "position" },
+					{ value: "username", name: "spirit" },
+					{ value: "email", name: "email" },
 				]}
 			/>
 		</div>

@@ -4,9 +4,9 @@ import MyInput from "./UI/input/MyInput";
 
 const CardForm = function ({ create }) {
 	const [card, setCard] = useState({
-		img: "./img/01.jpg",
 		name: "",
-		position: "",
+		username: "",
+		email: "",
 	});
 
 	const addNewCard = (e) => {
@@ -21,11 +21,12 @@ const CardForm = function ({ create }) {
 		create(newCard);
 
 		setCard({
-			img: "./img/01.jpg",
 			name: "",
-			position: "",
+			username: "",
+			email: "",
 		});
 	};
+
 	return (
 		<form className="card-list">
 			<MyInput
@@ -36,13 +37,20 @@ const CardForm = function ({ create }) {
 			/>
 
 			<MyInput
-				value={card.position}
-				onChange={(e) => setCard({ ...card, position: e.target.value })}
+				value={card.username}
+				onChange={(e) => setCard({ ...card, username: e.target.value })}
 				type="text"
-				placeholder="Position"
+				placeholder="Spirit Name"
 			/>
 
-			<MyButton onClick={addNewCard}>Save</MyButton>
+			<MyInput
+				value={card.email}
+				onChange={(e) => setCard({ ...card, email: e.target.value })}
+				type="text"
+				placeholder="Email"
+			/>
+
+			<MyButton onClick={addNewCard}>Add Card</MyButton>
 		</form>
 	);
 };

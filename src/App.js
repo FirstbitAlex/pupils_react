@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import "./css/normalize.css"
 import "./css/base.css"
 import CardForm from './Components/CardForm';
@@ -7,6 +8,7 @@ import CardFilter from './Components/CardFilter';
 import MyModal from './Components/UI/MyModal/MyModal';
 import MyButton from './Components/UI/button/MyButton';
 import { useCards } from './hooks/useCards';
+
 
 function App() {
 
@@ -20,12 +22,20 @@ function App() {
 		setModal(false)
 	}
 
+	async function fetchCards() {
+		const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+		setCards(response.data)
+		console.log(response.data)
+	}
+
 	const removeCard = (card) => {
 		setCards(cards.filter(c => c.id !== card.id))
 	}
 
 	return (
 		<div className="App">
+			<MyButton onClick={fetchCards}>Get</MyButton>
+
 			<div className="base-wrap">
 
 				<MyButton style={{ marginTop: '20px' }} onClick={() => setModal(true)}>

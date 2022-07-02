@@ -10,6 +10,7 @@
 		margin: 10px 0;
 		padding: 20px;
 		border: 1px solid #00F;
+		border-radius: 10px;
 
 		.card-img {
 			width: 100px;
@@ -19,7 +20,6 @@
 		}
 
 		.card-name {
-			margin-top: 20px;
 			line-height: 28px;
 			font-size: 24px;
 			font-weight: bold;
