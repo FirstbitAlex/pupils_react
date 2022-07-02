@@ -5,7 +5,7 @@ import CardItem from "./CardItem";
 
 const CardList = function ({ cards, remove }) {
 	if (!cards.length) {
-		return <div className="no-post-in-list">No posts in list</div>;
+		return <div className="no-card-in-list">No cards in list</div>;
 	}
 
 	return (

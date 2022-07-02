@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import "./css/normalize.css"
 import "./css/base.css"
 import CardForm from './Components/CardForm';
@@ -6,28 +6,14 @@ import CardList from './Components/CardList';
 import CardFilter from './Components/CardFilter';
 import MyModal from './Components/UI/MyModal/MyModal';
 import MyButton from './Components/UI/button/MyButton';
+import { useCards } from './hooks/useCards';
 
 function App() {
 
-	const [cards, setCards] = useState([
-		{ id: 1, img: "./img/01.jpg", name: "Alex", position: "C" },
-		{ id: 2, img: "./img/02.jpg", name: "Test", position: "A" },
-		{ id: 3, img: "./img/03.jpg", name: "123", position: "b" },
-	])
-
+	const [cards, setCards] = useState([])
 	const [filter, setFilter] = useState({ sort: '', query: '' });
 	const [modal, setModal] = useState(false);
-
-	const sortedCards = useMemo(() => {
-		if (filter.sort) {
-			return [...cards].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-		}
-		return cards
-	}, [filter.sort, cards])
-
-	const sortedAndSearchedCards = useMemo(() => {
-		return sortedCards.filter(card => card.name.toLowerCase().includes(filter.query.toLowerCase()))
-	}, [filter.query, sortedCards])
+	const sortedAndSearchedCards = useCards(cards, filter.sort, filter.query)
 
 	const createCard = (newCard) => {
 		setCards([...cards, newCard])
