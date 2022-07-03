@@ -25,3 +25,15 @@
   text-align: center;
   border: 1px solid teal;
 }
+
+.error-wrap {
+  position: relative;
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #A00;
+  background-color: rgba(170, 0, 0, 0.2);
+  text-align: center;
+  border: 1px solid #A00;
+}

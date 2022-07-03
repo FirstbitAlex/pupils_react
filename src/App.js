@@ -9,6 +9,7 @@ import MyButton from './Components/UI/button/MyButton';
 import { useCards } from './hooks/useCards';
 import CardService from './API/CardService';
 import Loader from './Components/UI/Loader/Loader';
+import { useFetching } from './hooks/useFetching';
 
 
 function App() {
@@ -17,7 +18,11 @@ function App() {
 	const [filter, setFilter] = useState({ sort: '', query: '' });
 	const [modal, setModal] = useState(false);
 	const sortedAndSearchedCards = useCards(cards, filter.sort, filter.query)
-	const [isCardsLoading, setIsCardsLoading] = useState(false);
+
+	const [fetchCards, isCardsLoading, cardError] = useFetching(async () => {
+		const cards = await CardService.getAll()
+		setCards(cards)
+	});
 
 	useEffect(() => {
 		fetchCards()
@@ -26,16 +31,6 @@ function App() {
 	const createCard = (newCard) => {
 		setCards([...cards, newCard])
 		setModal(false)
-	}
-
-	async function fetchCards() {
-		setIsCardsLoading(true)
-		setTimeout(async () => {
-			const cards = await CardService.getAll()
-			setCards(cards)
-			setIsCardsLoading(false)
-		}, 2000);
-
 	}
 
 	const removeCard = (card) => {
@@ -65,11 +60,13 @@ function App() {
 					setFilter={setFilter}
 				/>
 
+				{cardError && <div className="error-wrap">Error: ${cardError}</div>}
+
 				<hr style={{ margin: '15px 0' }} />
 
 
 				{isCardsLoading
-					? <div atyle={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Loader /></div>
+					? <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Loader /></div>
 					: <CardList remove={removeCard} cards={sortedAndSearchedCards} />
 				}
 
