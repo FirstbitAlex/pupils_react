@@ -9,7 +9,9 @@ const CardItem = function (props) {
 				{/* <div className="card-id">{props.number}</div> */}
 				{/* <img className="card-img" src="{props.card.img}" alt="" /> */}
 
-				<div className="card-name">{props.card.name}</div>
+				<div className="card-name">
+					{props.card.id} {props.card.name}
+				</div>
 				<div className="card-spirit">{props.card.username}</div>
 				<div className="card-email">{props.card.email}</div>
 				<div className="card-email">{props.card.position}</div>
