@@ -10,4 +10,18 @@ export default class CardService {
 		})
 		return response
 	}
+
+	static async getCardDetails(id) {
+		const response = await axios.get('https://jsonplaceholder.typicode.com/users/' + id)
+		return response
+	}
+
+	static async getCardComments(id, limit = 3) {
+		const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}/comments`, {
+			params: {
+				_limit: limit,
+			}
+		})
+		return response
+	}
 }

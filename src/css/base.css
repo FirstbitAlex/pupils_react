@@ -58,3 +58,14 @@
   color: #FFF;
   background-color: teal;
 }
+
+.navbar {
+  height: 50px;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+.navbar .link-item {
+  margin-left: auto;
+}
