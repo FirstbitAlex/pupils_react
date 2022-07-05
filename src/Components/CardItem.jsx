@@ -20,7 +20,7 @@ const CardItem = function (props) {
 				<div className="card-email">{props.card.position}</div>
 			</div>
 
-			<Link className="link-card-detail" to={"/post/" + props.card.id}>
+			<Link className="link-card-detail" to={"/card/" + props.card.id}>
 				Show details
 			</Link>
 
