@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../../context";
 import MyButton from "../button/MyButton";
 
@@ -12,25 +12,31 @@ const Navbar = () => {
 	};
 
 	return (
-		<div className="navbar">
+		<div>
 			{isAuth ? (
-				<div>
-					<Link className="link-item" to="/">
-						Home
-					</Link>
-					<Link className="link-item" to="/about">
-						About
-					</Link>
-					<Link className="link-item" to="/cards">
-						Cards
-					</Link>
-					<MyButton onClick={logout}>Log Out</MyButton>
+				<div className="navbar">
+					<div className="left-wrap">
+						<NavLink className="link-item" to="/">
+							Home
+						</NavLink>
+						<NavLink className="link-item" to="/about">
+							About
+						</NavLink>
+						<NavLink className="link-item" to="/cards">
+							Cards
+						</NavLink>
+					</div>
+					<div className="right-wrap">
+						<MyButton onClick={logout}>Log Out</MyButton>
+					</div>
 				</div>
 			) : (
-				<div>
-					<Link className="link-item" to="login">
-						Login
-					</Link>
+				<div className="navbar">
+					<div className="right-wrap">
+						<NavLink className="link-item" to="login">
+							Login
+						</NavLink>
+					</div>
 				</div>
 			)}
 		</div>

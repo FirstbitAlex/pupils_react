@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../css/normalize.css";
 import "../css/base.css";
 import CardForm from "../Components/CardForm";
@@ -12,6 +12,8 @@ import Loader from "../Components/UI/Loader/Loader";
 import { useFetching } from "../hooks/useFetching";
 import { getPageCount } from "../utils/pages";
 import Pagination from "../Components/UI/Pagination/Pagination";
+import { useObserver } from "../hooks/useObserver";
+import MySelect from "../Components/UI/select/MySelect";
 
 function Cards() {
 	const [cards, setCards] = useState([]);
@@ -21,19 +23,24 @@ function Cards() {
 	const [totalPages, setTotalPages] = useState(0);
 	const [limit, setLimit] = useState(3);
 	const [page, setPage] = useState(1);
+	const lastElement = useRef();
 
 	const [fetchCards, isCardsLoading, cardError] = useFetching(
 		async (limit, page) => {
 			const response = await CardService.getAll(limit, page);
-			setCards(response.data);
+			setCards([...cards, ...response.data]);
 			const totalCount = response.headers["x-total-count"];
 			setTotalPages(getPageCount(totalCount, limit));
 		}
 	);
 
+	useObserver(lastElement, page < totalPages, isCardsLoading, () => {
+		setPage(page + 1);
+	});
+
 	useEffect(() => {
 		fetchCards(limit, page);
-	}, []);
+	}, [page, limit]);
 
 	const createCard = (newCard) => {
 		setCards([...cards, newCard]);
@@ -46,7 +53,6 @@ function Cards() {
 
 	const changePage = (page) => {
 		setPage(page);
-		fetchCards(limit, page);
 	};
 
 	return (
@@ -69,13 +75,25 @@ function Cards() {
 
 				<CardFilter filter={filter} setFilter={setFilter} />
 
+				<MySelect
+					value={limit}
+					onChange={(value) => setLimit(value)}
+					defaultValue="Count on page"
+					options={[
+						{ value: 2, name: "2" },
+						{ value: 3, name: "3" },
+						{ value: 5, name: "5" },
+						{ value: -1, name: "All" },
+					]}
+				/>
+
 				{cardError && (
 					<div className="error-wrap">Error: ${cardError}</div>
 				)}
 
 				<hr style={{ margin: "15px 0" }} />
 
-				{isCardsLoading ? (
+				{isCardsLoading && (
 					<div
 						style={{
 							display: "flex",
@@ -85,13 +103,14 @@ function Cards() {
 					>
 						<Loader />
 					</div>
-				) : (
-					<CardList
-						remove={removeCard}
-						cards={sortedAndSearchedCards}
-					/>
 				)}
 
+				<CardList remove={removeCard} cards={sortedAndSearchedCards} />
+
+				<div
+					ref={lastElement}
+					style={{ height: 20, background: "red" }}
+				/>
 				<Pagination
 					page={page}
 					changePage={changePage}
